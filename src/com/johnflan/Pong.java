@@ -23,13 +23,15 @@ public class Pong extends JPanel {
     public int homePenalty = 0;
 
     int ballX = 0;
-    int ballY = WINDOW_HEIGHT / 2;
+    int ballY = WINDOW_HEIGHT / 4;
 
     int homePuckX = 0;
     int awayPuckX = 0;
 
     int homeScore = 0;
     int awayScore = 0;
+
+    static boolean initialFrame = true;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -55,8 +57,14 @@ public class Pong extends JPanel {
 
             game.moveBall();
             game.repaint();
-            //15 ms is close to 60fps
-            Thread.sleep(10);
+
+            if (initialFrame){
+                Thread.sleep(4000);
+                initialFrame = false;
+            } else {
+                //15 ms is close to 60fps
+                Thread.sleep(10);
+            }
         }
     }
 
@@ -78,7 +86,8 @@ public class Pong extends JPanel {
         }
 
         //Determine away ball puck bounce
-        if(ballY == 28 && BALL_DIRECTION_DOWN == false && (awayPuckX - 50) < ballX  && (awayPuckX + 50) > ballX ){
+        if((ballY <= 30 &&  ballY >= 15) && BALL_DIRECTION_DOWN == false &&
+                (awayPuckX - 50) < ballX  && (awayPuckX + 50) > ballX ){
             BALL_DIRECTION_DOWN = !BALL_DIRECTION_DOWN;
         }
 
@@ -159,12 +168,12 @@ public class Pong extends JPanel {
     }
 
     private void drawScores(Graphics2D g2d) {
-        Font exFont = new Font("CourierNew",Font.PLAIN,20);
+        Font exFont = new Font(Font.MONOSPACED ,Font.PLAIN,20);
 
         g2d.setFont(exFont);
         g2d.setColor(Color.WHITE);
-        g2d.drawString(String.valueOf(awayScore), 10, 290);
-        g2d.drawString(String.valueOf(homeScore), 10, 325);
+        g2d.drawString(String.valueOf(awayScore), 12, 290);
+        g2d.drawString(String.valueOf(homeScore), 12, 325);
     }
 
     private void drawHomePenalty(Graphics2D g2d) {

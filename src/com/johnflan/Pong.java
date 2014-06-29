@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("serial")
 public class Pong extends JPanel {
 
+    private AudioManager audioManager;
+
     public static final int WINDOW_HEIGHT = 600;
     public static final int WINDOW_WIDTH = 400;
 
@@ -68,15 +70,21 @@ public class Pong extends JPanel {
         }
     }
 
+    public Pong(){
+        audioManager = new AudioManager();
+    }
+
     private void moveBall() {
 
         //Determine ball horizontal direction
         if (ballX + BALL_SIZE > WINDOW_WIDTH){
             BALL_DIRECTION_RIGHT = false;
+            audioManager.playWallHit();
         }
 
         if (ballX < 0){
             BALL_DIRECTION_RIGHT = true;
+            audioManager.playWallHit();
         }
 
         if (BALL_DIRECTION_RIGHT){
@@ -89,12 +97,14 @@ public class Pong extends JPanel {
         if((ballY <= 30 &&  ballY >= 15) && BALL_DIRECTION_DOWN == false &&
                 (awayPuckX - 50) < ballX  && (awayPuckX + 50) > ballX ){
             BALL_DIRECTION_DOWN = !BALL_DIRECTION_DOWN;
+            audioManager.playPaddleHit();
         }
 
         //Determine home ball puck bounce
         if((ballY >= WINDOW_HEIGHT - 30 &&  ballY <= WINDOW_HEIGHT - 15) && BALL_DIRECTION_DOWN == true &&
                 (homePuckX - 60 ) <= ballX  && (homePuckX + 50) > ballX ){
             BALL_DIRECTION_DOWN = !BALL_DIRECTION_DOWN;
+            audioManager.playPaddleHit();
         }
 
         //Determine ball vertical direction
@@ -102,12 +112,14 @@ public class Pong extends JPanel {
             BALL_DIRECTION_DOWN = false;
             homePenalty = 255;
             awayScore += 1;
+            audioManager.playScore();
         }
 
         if (ballY < 0){
             BALL_DIRECTION_DOWN = true;
             awayPenalty = 255;
             homeScore += 1;
+            audioManager.playScore();
         }
 
         if(BALL_DIRECTION_DOWN){

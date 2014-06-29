@@ -9,13 +9,14 @@ public class Pong extends JPanel {
 
     private AudioManager audioManager;
 
+    //CONSTANTS
     public static final int WINDOW_HEIGHT = 600;
     public static final int WINDOW_WIDTH = 400;
-
     public static final int PUCK_HEIGHT = 15;
     public static final int PUCK_WIDTH = 100;
-
     public static final int BALL_SIZE = 15;
+
+    //GAME STATE
     public static final int GAME_SPEED = 4;
 
     public boolean BALL_DIRECTION_DOWN = true;
@@ -25,7 +26,7 @@ public class Pong extends JPanel {
     public int homePenalty = 0;
 
     int ballX = 0;
-    int ballY = WINDOW_HEIGHT / 4;
+    int ballY = WINDOW_HEIGHT / 6;
 
     int homePuckX = 0;
     int awayPuckX = 0;
@@ -61,7 +62,7 @@ public class Pong extends JPanel {
             game.repaint();
 
             if (initialFrame){
-                Thread.sleep(4000);
+                Thread.sleep(3000);
                 initialFrame = false;
             } else {
                 //15 ms is close to 60fps
@@ -154,20 +155,15 @@ public class Pong extends JPanel {
 
         g2d.setColor(Color.WHITE);
 
-        //AWAY PUCK
-        g2d.fillRect(awayPuckX - (PUCK_WIDTH / 2), 15, PUCK_WIDTH, PUCK_HEIGHT);
-
-        //HOME PUCK
-        g2d.fillRect(homePuckX - (PUCK_WIDTH / 2), WINDOW_HEIGHT - 15, PUCK_WIDTH, PUCK_HEIGHT);
-
-        //BALL
-        g2d.fillOval(ballX, ballY, BALL_SIZE, BALL_SIZE);
-
+        drawPucks(g2d);
+        drawBall(g2d);
         drawScores(g2d);
         drawInterlacePattern(g2d);
         drawPitchHalfwayLine(g2d);
+        drawPenalyIfExists(g2d);
+    }
 
-
+    private void drawPenalyIfExists(Graphics2D g2d) {
         //AWAY PENALTY
         if(awayPenalty > 0){
             drawAwayPenalty(g2d);
@@ -177,6 +173,19 @@ public class Pong extends JPanel {
         if(homePenalty > 0){
             drawHomePenalty(g2d);
         }
+    }
+
+    private void drawBall(Graphics2D g2d) {
+        //BALL
+        g2d.fillOval(ballX, ballY, BALL_SIZE, BALL_SIZE);
+    }
+
+    private void drawPucks(Graphics2D g2d) {
+        //AWAY PUCK
+        g2d.fillRect(awayPuckX - (PUCK_WIDTH / 2), 15, PUCK_WIDTH, PUCK_HEIGHT);
+
+        //HOME PUCK
+        g2d.fillRect(homePuckX - (PUCK_WIDTH / 2), WINDOW_HEIGHT - 15, PUCK_WIDTH, PUCK_HEIGHT);
     }
 
     private void drawScores(Graphics2D g2d) {

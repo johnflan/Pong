@@ -28,6 +28,9 @@ public class Pong extends JPanel {
     int homePuckX = 0;
     int awayPuckX = 0;
 
+    int homeScore = 0;
+    int awayScore = 0;
+
     public static void main(String[] args) throws InterruptedException {
 
         JFrame frame = new JFrame("Pong");
@@ -89,11 +92,13 @@ public class Pong extends JPanel {
         if(ballY > WINDOW_HEIGHT){
             BALL_DIRECTION_DOWN = false;
             homePenalty = 255;
+            awayScore += 1;
         }
 
         if (ballY < 0){
             BALL_DIRECTION_DOWN = true;
             awayPenalty = 255;
+            homeScore += 1;
         }
 
         if(BALL_DIRECTION_DOWN){
@@ -137,8 +142,10 @@ public class Pong extends JPanel {
         //BALL
         g2d.fillOval(ballX, ballY, BALL_SIZE, BALL_SIZE);
 
+        drawScores(g2d);
         drawInterlacePattern(g2d);
         drawPitchHalfwayLine(g2d);
+
 
         //AWAY PENALTY
         if(awayPenalty > 0){
@@ -149,6 +156,15 @@ public class Pong extends JPanel {
         if(homePenalty > 0){
             drawHomePenalty(g2d);
         }
+    }
+
+    private void drawScores(Graphics2D g2d) {
+        Font exFont = new Font("CourierNew",Font.PLAIN,20);
+
+        g2d.setFont(exFont);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(String.valueOf(awayScore), 10, 290);
+        g2d.drawString(String.valueOf(homeScore), 10, 325);
     }
 
     private void drawHomePenalty(Graphics2D g2d) {

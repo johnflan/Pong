@@ -14,7 +14,7 @@ public class Pong extends JPanel {
     public static final int PUCK_WIDTH = 100;
 
     public static final int BALL_SIZE = 15;
-    public static final int PIXEL_MOVE_PER_FRAME = 2;
+    public static final int GAME_SPEED = 4;
 
     public boolean BALL_DIRECTION_DOWN = true;
     public boolean BALL_DIRECTION_RIGHT = true;
@@ -72,11 +72,10 @@ public class Pong extends JPanel {
         }
 
         if (BALL_DIRECTION_RIGHT){
-            ballX = ballX + PIXEL_MOVE_PER_FRAME;
+            ballX = ballX + GAME_SPEED;
         } else {
-            ballX = ballX - PIXEL_MOVE_PER_FRAME;
+            ballX = ballX - GAME_SPEED;
         }
-
 
         //Determine away ball puck bounce
         if(ballY == 28 && BALL_DIRECTION_DOWN == false && (awayPuckX - 50) < ballX  && (awayPuckX + 50) > ballX ){
@@ -84,7 +83,8 @@ public class Pong extends JPanel {
         }
 
         //Determine home ball puck bounce
-        if(ballY == WINDOW_HEIGHT - 30 && BALL_DIRECTION_DOWN == true && (homePuckX - 50 - (PUCK_WIDTH / 2)) <= ballX  && (homePuckX + 50) > ballX ){
+        if((ballY >= WINDOW_HEIGHT - 30 &&  ballY <= WINDOW_HEIGHT - 15) && BALL_DIRECTION_DOWN == true &&
+                (homePuckX - 60 ) <= ballX  && (homePuckX + 50) > ballX ){
             BALL_DIRECTION_DOWN = !BALL_DIRECTION_DOWN;
         }
 
@@ -102,9 +102,9 @@ public class Pong extends JPanel {
         }
 
         if(BALL_DIRECTION_DOWN){
-            ballY = ballY + PIXEL_MOVE_PER_FRAME;
+            ballY = ballY + GAME_SPEED;
         } else {
-            ballY = ballY - PIXEL_MOVE_PER_FRAME;
+            ballY = ballY - GAME_SPEED;
         }
 
         //Determine penalty
@@ -168,12 +168,12 @@ public class Pong extends JPanel {
     }
 
     private void drawHomePenalty(Graphics2D g2d) {
-        g2d.setColor(new Color(255, 0, 0, homePenalty));
-        g2d.fillRect(0, (WINDOW_HEIGHT / 2) + PIXEL_MOVE_PER_FRAME, WINDOW_WIDTH, (WINDOW_HEIGHT / 2) + 20);
+        g2d.setColor(new Color(255, 255, 255, homePenalty));
+        g2d.fillRect(0, (WINDOW_HEIGHT / 2) + 2, WINDOW_WIDTH, (WINDOW_HEIGHT / 2) + 20);
     }
 
     private void drawAwayPenalty(Graphics2D g2d) {
-        g2d.setColor(new Color(255, 0, 0, awayPenalty));
+        g2d.setColor(new Color(255, 255, 255, awayPenalty));
         g2d.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2);
     }
 
@@ -190,7 +190,7 @@ public class Pong extends JPanel {
         int currentWidth = 12;
         g2d.setColor(Color.WHITE);
         while(WINDOW_WIDTH > currentWidth){
-            g2d.fillRect(currentWidth, WINDOW_HEIGHT / 2, 15, PIXEL_MOVE_PER_FRAME);
+            g2d.fillRect(currentWidth, WINDOW_HEIGHT / 2, 15, 2);
             currentWidth += 30;
         }
     }
